@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Profesional - Análisis de Nacimientos 2023 y 2024</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta de colores oscura profesional */
+            --primary-color: #3b82f6;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #0f0f0f;
+            --darker-color: #080808;
+            --light-color: #f8fafc;
+            --border-color: #374151;
+            --text-primary: #f8fafc;
+            --text-secondary: #9ca3af;
+            --glass-bg: rgba(17, 24, 39, 0.8);
+            --glass-border: rgba(75, 85, 99, 0.3);
+            
+            /* Sombras mejoradas para modo oscuro */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+            
+            /* Gradientes oscuros espectaculares */
+            --gradient-primary: linear-gradient(135deg, #1f2937 0%, #111827 50%, #0f172a 100%);
+            --gradient-secondary: linear-gradient(135deg, #374151 0%, #1f2937 50%, #111827 100%);
+            --gradient-success: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+            --gradient-warm: linear-gradient(135deg, #7c2d12 0%, #9a3412 50%, #c2410c 100%);
+            --gradient-cool: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+            --gradient-dark: linear-gradient(135deg, #000000 0%, #111827 50%, #1f2937 100%);
+            
+            /* Efectos de partículas */
+            --particle-color: rgba(59, 130, 246, 0.4);
+            
+            /* Transiciones suaves */
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gradient-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Fondo profesional y sutil */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Eliminamos la segunda capa para simplicidad */
+        body::after {
+            display: none;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.4;
+                filter: blur(1px) brightness(1);
+            }
+            25% { 
+                transform: translate(40px, -40px) rotate(90deg) scale(1.1);
+                opacity: 0.7;
+                filter: blur(2px) brightness(1.2);
+            }
+            50% { 
+                transform: translate(-30px, 30px) rotate(180deg) scale(0.9);
+                opacity: 0.5;
+                filter: blur(1.5px) brightness(0.9);
+            }
+            75% { 
+                transform: translate(50px, -20px) rotate(270deg) scale(1.05);
+                opacity: 0.8;
+                filter: blur(3px) brightness(1.1);
+            }
+        }
+
+        @keyframes particleFloat2 {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.3;
+            }
+            33% { 
+                transform: translate(-25px, 35px) rotate(120deg) scale(1.15);
+                opacity: 0.6;
+            }
+            66% { 
+                transform: translate(35px, -25px) rotate(240deg) scale(0.85);
+                opacity: 0.4;
+            }
+        }
+
+        /* Container principal */
+        .main-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Navegación flotante profesional */
+        .floating-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(17, 24, 39, 0.98);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 0.75rem 2rem;
+            transition: var(--transition-normal);
+        }
+
+        .floating-nav::before {
+            display: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-normal);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            display: none;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.15);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin: 6rem 0 4rem 0;
+            padding: 4rem 2rem;
+            background: var(--glass-bg);
+            border-radius: 32px;
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-2xl);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.05) 0%, 
+                rgba(139, 92, 246, 0.08) 50%, 
+                rgba(6, 182, 212, 0.05) 100%);
+            pointer-events: none;
+            border-radius: 32px;
+        }
+
+        /* Eliminar efecto holográfico */
+        .header::after {
+            display: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header .icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+            50% { 
+                transform: scale(1.05);
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #ddd6fe 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1) saturate(1.1); }
+        }
+
+        .header p {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Year Section Headers */
+        .year-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: var(--glass-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .year-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--gradient-cool);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .year-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .year-header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .stat-card {
+            background: rgba(17, 24, 39, 0.95);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: var(--transition-normal);
+        }
+
+        .stat-card::after {
+            display: none;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 2px 8px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card .icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            position: relative;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: var(--transition-normal);
+        }
+
+        .stat-card .icon::before {
+            display: none;
+        }
+
+        .stat-card .icon::after {
+            display: none;
+        }
+
+        .stat-card:hover .icon {
+            transform: scale(1.05);
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.25),
+                0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .stat-card .icon.blue { background: var(--gradient-cool); }
+        .stat-card .icon.green { background: var(--gradient-success); }
+        .stat-card .icon.orange { background: var(--gradient-warm); }
+        .stat-card .icon.purple { background: linear-gradient(135deg, var(--secondary-color), var(--accent-color)); }
+
+        .stat-card h3 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, 
+                var(--primary-color) 0%, 
+                var(--secondary-color) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* Eliminar efectos de cristal líquido */
+        /* Indicadores de contexto para storytelling */
+        .context-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .highlight-card {
+            border-left: 4px solid var(--primary-color);
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.05) 0%, 
+                rgba(17, 24, 39, 0.95) 100%);
+        }
+
+        .critical-card {
+            border-left: 4px solid var(--danger-color);
+            background: linear-gradient(135deg, 
+                rgba(239, 68, 68, 0.05) 0%, 
+                rgba(17, 24, 39, 0.95) 100%);
+        }
+
+        /* Mejora de legibilidad para las cards */
+        .card {
+            background: rgba(17, 24, 39, 0.98);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: var(--transition-normal);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 2px 8px rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Eliminar animaciones de cristal líquido */
+        @keyframes liquidGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); opacity: 0; }
+            50% { transform: translateX(100%); opacity: 0.7; }
+        }
+
+        /* Mantener solo animaciones sutiles profesionales */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+            50% { 
+                transform: scale(1.02);
+                text-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* Grid para gráficas y tablas */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: var(--transition-normal);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h3 i {
+            color: var(--primary-color);
+        }
+
+        /* Contenedor de gráficas */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        /* Tablas */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--gradient-cool);
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr {
+            transition: var(--transition-fast);
+        }
+
+        tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        td {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Insights Section */
+        .insights-section {
+            margin: 4rem 0;
+            padding: 3rem;
+            background: var(--glass-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insights-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--danger-color), var(--warning-color));
+        }
+
+        .insights-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .insights-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .insights-title i {
+            color: var(--danger-color);
+            font-size: 2rem;
+        }
+
+        .insights-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .insight-card {
+            background: rgba(17, 24, 39, 0.6);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--danger-color), var(--warning-color));
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .insight-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: var(--gradient-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .insight-card h4 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .insight-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Footer Section */
+        .footer-section {
+            margin: 4rem 0 2rem 0;
+            padding: 2rem 3rem;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .sources h4,
+        .credits h4 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sources h4 i {
+            color: var(--primary-color);
+        }
+
+        .credits h4 i {
+            color: var(--secondary-color);
+        }
+
+        .sources p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .source-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-normal);
+            border-bottom: 2px solid transparent;
+        }
+
+        .source-link:hover {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .instagram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e1306c, #fd1d1d, #f77737, #fcaf45);
+            background-size: 200% 200%;
+            animation: instagramGradient 3s ease infinite;
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+        }
+
+        .instagram-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(225, 48, 108, 0.3);
+            color: white;
+        }
+
+        .instagram-link i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes instagramGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header {
+                margin: 4rem 0 2rem 0;
+                padding: 2rem 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Navegación flotante -->
+        <nav class="floating-nav">
+            <div class="nav-content">
+                <div class="nav-logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard Hidalgo</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#conclusiones">Conclusiones</a>
+                    <a href="#year-2023">2023</a>
+                    <a href="#year-2024">2024</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <!-- Header principal -->
+            <div class="header" id="inicio">
+                <div class="header-content">
+                    <div class="icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h1>Los 40 nacimientos registrados en Hidalgo</h1>
+                    <p>durante 2023 y 2024 con las madres más jóvenes y edad del padre respectivamente</p>
+                    <div class="subtitle">
+                        <i class="fas fa-globe-americas"></i>
+                        Datos demográficos y sociológicos
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusiones Finales - Análisis Sociológico y Politológico -->
+            <div class="insights-section" id="conclusiones">
+                <div class="insights-header">
+                    <div class="insights-title">
+                        <i class="fas fa-university"></i>
+                        Conclusiones Finales: 
+                    </div>
+                    <p class="insights-subtitle">Interpretación crítica de los patrones estructurales y sus implicaciones para las políticas públicas en Hidalgo</p>
+                </div>
+                
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h4>Asimetría de Poder Estructural</h4>
+                        <p>Las diferencias de edad (hasta 44 años en 2024) revelan relaciones de poder desiguales que trascienden lo individual. Esta asimetría refleja estructuras sociales patriarcales donde la vulnerabilidad adolescente se cruza con dinámicas de dominación económica, social y simbólica, perpetuando ciclos de dependencia y exclusión.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Crisis de Protección Institucional</h4>
+                        <p>El incremento de 37 a 40 casos (+8.1%) evidencia el colapso de los mecanismos de protección estatal. La concentración geográfica en Pachuca sugiere que las políticas públicas actuales son insuficientes, fragmentadas y no abordan las causas estructurales del problema.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h4>Geografía de la Vulnerabilidad</h4>
+                        <p>La persistencia de Pachuca como epicentro (15 casos en 2023, 9 en 2024) junto con la expansión a municipios como Ixmiquilpan y Tulancingo, revela patrones de urbanización desigual donde la marginalidad urbana y rural convergen en espacios de riesgo no regulados.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>Reproducción de Desigualdades de Género</h4>
+                        <p>La reducción de la edad promedio de madres (15.5 a 14.6 años) mientras persisten padres adultos, materializa la intersección entre desigualdad de género, clase y edad. Esto perpetúa la feminización de la pobreza y limita las oportunidades de movilidad social ascendente.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4>Normalización de la Violencia Estructural</h4>
+                        <p>Los datos revelan la naturalización social de relaciones abusivas. La persistencia del fenómeno indica que las estructuras comunitarias, familiares e institucionales han normalizado estas dinámicas, requiriendo intervenciones que deconstruyan estos patrones culturales.</p>
+                    </div>
+
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <h4>Imperativo de Transformación Sistémica</h4>
+                        <p>La evidencia demanda una reformulación radical de las políticas públicas: desde enfoques punitivos hacia estrategias de justicia social que aborden determinantes estructurales como educación, empleo, protección social y transformación de masculinidades hegemónicas en el estado de Hidalgo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Año 2023 -->
+            <div class="year-section" id="year-2023">
+                <div class="year-header">
+                    <h2>Análisis 2023</h2>
+                    <p>37 casos registrados en 17 municipios</p>
+                </div>
+
+                <!-- Narrativa de contexto -->
+                <div class="card highlight-card" style="margin-bottom: 2rem;">
+                    <div class="context-indicator">📊 Contexto</div>
+                    <h3><i class="fas fa-info-circle"></i> ¿Qué nos dice 2023?</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1rem;">
+                        El año 2023 marca un punto de referencia crítico en nuestro análisis. Con <strong>37 casos</strong> distribuidos across <strong>17 municipios</strong>, observamos patrones preocupantes que requieren atención inmediata. La concentración geográfica y las diferencias de edad revelan estructuras sistémicas que trascienden casos individuales.
+                    </p>
+                </div>
+
+                <!-- Estadísticas 2023 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon blue">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>17</h3>
+                        <p>Municipios Analizados</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon orange">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>38</h3>
+                        <p>Máx. Diferencia de Edad</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon green">
+                            <i class="fas fa-female"></i>
+                        </div>
+                        <h3>15.5</h3>
+                        <p>Edad Promedio Madres</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon purple">
+                            <i class="fas fa-male"></i>
+                        </div>
+                        <h3>36.2</h3>
+                        <p>Edad Promedio Padres</p>
+                    </div>
+                </div>
+
+                <!-- Gráficas y tablas 2023 -->
+                <div class="content-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-female"></i> Edad Promedio de las Madres 2023</h3>
+                        <div class="table-container">
+                            <table id="madresTable2023">
+                                <thead>
+                                    <tr>
+                                        <th>Municipio</th>
+                                        <th>Edad Promedio</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="madresTableBody2023">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(236, 72, 153, 0.05); border-left: 4px solid #ec4899;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-user-friends" style="color: #ec4899;"></i>
+                                <strong style="color: var(--text-primary);">Vulnerabilidad Infantil</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                El <strong>82% de las madres tenían entre 14-16 años</strong>. Atotonilco registra el caso más joven (14 años), mientras que la mayoría de municipios reportan madres de 15-16 años, todas en plena adolescencia y edad escolar.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-male"></i> Edad Promedio de los Padres 2023</h3>
+                        <div class="table-container">
+                            <table id="padresTable2023">
+                                <thead>
+                                    <tr>
+                                        <th>Municipio</th>
+                                        <th>Edad Promedio</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="padresTableBody2023">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(6, 182, 212, 0.05); border-left: 4px solid #06b6d4;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-user-tie" style="color: #06b6d4;"></i>
+                                <strong style="color: var(--text-primary);">Perpetradores Adultos</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                Los padres van desde <strong>30 años (Ixmiquilpan) hasta 51 años (Atotonilco)</strong>. El 70% superan los 35 años, indicando que son adultos establecidos que se aprovechan de la vulnerabilidad adolescente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> Diferencia Máxima de Edad 2023</h3>
+                        <div class="chart-container">
+                            <canvas id="diferenciaChart2023"></canvas>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(59, 130, 246, 0.05); border-left: 4px solid #3b82f6;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-lightbulb" style="color: #3b82f6;"></i>
+                                <strong style="color: var(--text-primary);">Insight Clave</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                <strong>Pachuca de Soto</strong> presenta la diferencia de edad más alarmante (38 años), seguido por <strong>Atotonilco el Grande</strong> (37 años). Estas brechas extremas sugieren relaciones de poder asimétricas que requieren intervención inmediata del sistema de protección.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-chart-bar"></i> Recuento de Casos por Municipio 2023</h3>
+                        <div class="chart-container">
+                            <canvas id="recuentoChart2023"></canvas>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(139, 92, 246, 0.05); border-left: 4px solid #8b5cf6;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-map-marked-alt" style="color: #8b5cf6;"></i>
+                                <strong style="color: var(--text-primary);">Concentración Geográfica</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                <strong>Pachuca concentra el 40.5%</strong> de todos los casos (15 de 37), mientras que <strong>Huejutla</strong> representa el 18.9% (7 casos). Esta concentración urbana indica zonas de alta vulnerabilidad que necesitan programas focalizados de prevención.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-chart-area"></i> Comparación de Edades por Caso Individual 2023</h3>
+                    <div class="chart-container">
+                        <canvas id="edadesChart2023"></canvas>
+                    </div>
+                    <div class="insight-card" style="margin-top: 1rem; background: rgba(236, 72, 153, 0.05); border-left: 4px solid #ec4899;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-exclamation-circle" style="color: #ec4899;"></i>
+                            <strong style="color: var(--text-primary);">Patrón Crítico</strong>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                            Las líneas muestran un patrón preocupante: mientras las <strong style="color: #ec4899;">madres son consistentemente menores</strong> (14-16 años), los <strong style="color: #06b6d4;">padres varían ampliamente</strong> (30-53 años). Esta disparidad sistemática evidencia relaciones de poder estructuralmente desiguales y potencialmente abusivas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Año 2024 -->
+            <div class="year-section" id="year-2024">
+                <div class="year-header">
+                    <h2>Análisis 2024</h2>
+                    <p>40 casos registrados en 13 municipios</p>
+                </div>
+
+                <!-- Narrativa de evolución -->
+                <div class="card critical-card" style="margin-bottom: 2rem;">
+                    <div class="context-indicator">⚠️ Evolución</div>
+                    <h3><i class="fas fa-trending-up"></i> Tendencias Alarmantes en 2024</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1rem;">
+                        2024 muestra una <strong>intensificación del problema</strong>: aunque el número de municipios disminuyó a <strong>13</strong>, los casos aumentaron a <strong>40</strong> (+8.1%). Esto sugiere una <strong>concentración geográfica</strong> del fenómeno y un empeoramiento en las zonas más vulnerables. La edad promedio de las madres <strong>bajó de 15.5 a 14.6 años</strong>, indicando que las víctimas son cada vez más jóvenes.
+                    </p>
+                </div>
+
+                <!-- Estadísticas 2024 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon blue">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>13</h3>
+                        <p>Municipios Analizados</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon orange">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>44</h3>
+                        <p>Máx. Diferencia de Edad</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon green">
+                            <i class="fas fa-female"></i>
+                        </div>
+                        <h3>14.6</h3>
+                        <p>Edad Promedio Madres</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon purple">
+                            <i class="fas fa-male"></i>
+                        </div>
+                        <h3>34.2</h3>
+                        <p>Edad Promedio Padres</p>
+                    </div>
+                </div>
+
+                <!-- Gráficas y tablas 2024 -->
+                <div class="content-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-female"></i> Edad Promedio de las Madres 2024</h3>
+                        <div class="table-container">
+                            <table id="madresTable2024">
+                                <thead>
+                                    <tr>
+                                        <th>Municipio</th>
+                                        <th>Edad Promedio</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="madresTableBody2024">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-child" style="color: #ef4444;"></i>
+                                <strong style="color: var(--text-primary);">Crisis de Protección</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                <strong>Reducción alarmante:</strong> edad promedio bajó de 15.5 a 14.6 años. <strong>Jacala y Tezontepec</strong> reportan madres de solo 14 años, mientras que <strong>Tulancingo</strong> registra casos de 13 años. Las víctimas son cada vez más jóvenes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-male"></i> Edad Promedio de los Padres 2024</h3>
+                        <div class="table-container">
+                            <table id="padresTable2024">
+                                <thead>
+                                    <tr>
+                                        <th>Municipio</th>
+                                        <th>Edad Promedio</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="padresTableBody2024">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(139, 92, 246, 0.05); border-left: 4px solid #8b5cf6;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-user-secret" style="color: #8b5cf6;"></i>
+                                <strong style="color: var(--text-primary);">Perpetradores Diversos</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                Rango amplio: desde <strong>25.3 años (Huejutla)</strong> hasta <strong>45 años (Mixquiahuala y Tezontepec)</strong>. Sorprende la aparición de perpetradores más jóvenes, sugiriendo diferentes dinámicas de abuso según la región.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> Diferencia Máxima de Edad 2024</h3>
+                        <div class="chart-container">
+                            <canvas id="diferenciaChart2024"></canvas>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(16, 185, 129, 0.05); border-left: 4px solid #10b981;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-trending-up" style="color: #10b981;"></i>
+                                <strong style="color: var(--text-primary);">Empeoramiento Crítico</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                La situación se agravó en 2024: <strong>Pachuca</strong> alcanzó 44 años de diferencia (vs 38 en 2023), mientras que <strong>Zacualtipán</strong> registró 37 años. El incremento en las brechas de edad indica un deterioro en los mecanismos de protección infantil.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-chart-bar"></i> Recuento de Casos por Municipio 2024</h3>
+                        <div class="chart-container">
+                            <canvas id="recuentoChart2024"></canvas>
+                        </div>
+                        <div class="insight-card" style="margin-top: 1rem; background: rgba(245, 158, 11, 0.05); border-left: 4px solid #f59e0b;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-chart-bar" style="color: #f59e0b;"></i>
+                                <strong style="color: var(--text-primary);">Redistribución Preocupante</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                Aunque <strong>Pachuca redujo casos a 9</strong> (vs 15 en 2023), surgieron nuevos focos: <strong>Ixmiquilpan, Santiago Tulantepec y Tulancingo</strong> con 5 casos cada uno. Esta dispersión sugiere que el problema se está expandiendo geográficamente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-chart-area"></i> Comparación de Edades por Caso Individual 2024</h3>
+                    <div class="chart-container">
+                        <canvas id="edadesChart2024"></canvas>
+                    </div>
+                    <div class="insight-card" style="margin-top: 1rem; background: rgba(239, 68, 68, 0.05); border-left: 4px solid #ef4444;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-skull-crossbones" style="color: #ef4444;"></i>
+                            <strong style="color: var(--text-primary);">Alerta Máxima</strong>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                            2024 muestra el caso más extremo registrado: <strong style="color: #ef4444;">una madre de 13 años con un padre de 58</strong> en Pachuca (45 años de diferencia). Las <strong style="color: #ec4899;">madres son ahora más jóvenes</strong> (promedio 14.6 vs 15.5), evidenciando una crisis de protección infantil sin precedentes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fuentes y Créditos -->
+            <div class="footer-section">
+                <div class="footer-content">
+                    <div class="sources">
+                        <h4><i class="fas fa-book"></i> DataSet:</h4>
+                        <p><a href="http://www.dgis.salud.gob.mx/contenidos/basesdedatos/da_nacimientos_gobmx.html" target="_blank" class="source-link">Dirección General de Información en Salud</a></p>
+                        <p>Graficos propios</p>
+                    </div>
+                    <div class="credits">
+                        <h4><i class="fas fa-user-friends"></i> Créditos:</h4>
+                        <a href="https://www.instagram.com/politica_con_datos" target="_blank" class="instagram-link">
+                            <i class="fab fa-instagram"></i>
+                            @politica_con_datos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos 2023
+        const diferenciaDatos2023 = [
+            { municipio: "Pachuca de Soto", diferencia: 38 },
+            { municipio: "Atotonilco el Grande", diferencia: 37 },
+            { municipio: "Huejutla de Reyes", diferencia: 33 },
+            { municipio: "Zimapán", diferencia: 32 },
+            { municipio: "Tulancingo de Bravo", diferencia: 29 },
+            { municipio: "Zacualtipán de Ángeles", diferencia: 28 },
+            { municipio: "Metepec", diferencia: 24 },
+            { municipio: "Tula de Allende", diferencia: 24 },
+            { municipio: "Tecozautla", diferencia: 21 },
+            { municipio: "Tizayuca", diferencia: 21 },
+            { municipio: "Apan", diferencia: 20 },
+            { municipio: "San Bartolo Tutotepec", diferencia: 18 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", diferencia: 18 },
+            { municipio: "Tepeji del Río de Ocampo", diferencia: 17 },
+            { municipio: "Actopan", diferencia: 15 },
+            { municipio: "Ixmiquilpan", diferencia: 15 },
+            { municipio: "Mixquiahuala de Juárez", diferencia: 15 }
+        ];
+
+        const madresDatos2023 = [
+            { municipio: "Atotonilco el Grande", edad: 14 },
+            { municipio: "Ixmiquilpan", edad: 15 },
+            { municipio: "San Bartolo Tutotepec", edad: 15 },
+            { municipio: "Tepeji del Río de Ocampo", edad: 15 },
+            { municipio: "Zimapán", edad: 15 },
+            { municipio: "Huejutla de Reyes", edad: 15.29 },
+            { municipio: "Metepec", edad: 15.67 },
+            { municipio: "Pachuca de Soto", edad: 15.73 },
+            { municipio: "Actopan", edad: 16 },
+            { municipio: "Apan", edad: 16 },
+            { municipio: "Mixquiahuala de Juárez", edad: 16 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", edad: 16 },
+            { municipio: "Tecozautla", edad: 16 },
+            { municipio: "Tizayuca", edad: 16 },
+            { municipio: "Tula de Allende", edad: 16 },
+            { municipio: "Tulancingo de Bravo", edad: 16 },
+            { municipio: "Zacualtipán de Ángeles", edad: 16 }
+        ].sort((a, b) => a.edad - b.edad);
+
+        const padresDatos2023 = [
+            { municipio: "Atotonilco el Grande", edad: 51 },
+            { municipio: "Zimapán", edad: 47 },
+            { municipio: "Tulancingo de Bravo", edad: 45 },
+            { municipio: "Zacualtipán de Ángeles", edad: 44 },
+            { municipio: "Tula de Allende", edad: 40 },
+            { municipio: "Tecozautla", edad: 37 },
+            { municipio: "Tizayuca", edad: 37 },
+            { municipio: "Pachuca de Soto", edad: 36.8 },
+            { municipio: "Apan", edad: 36 },
+            { municipio: "Huejutla de Reyes", edad: 35.86 },
+            { municipio: "Metepec", edad: 35.67 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", edad: 34 },
+            { municipio: "San Bartolo Tutotepec", edad: 33 },
+            { municipio: "Tepeji del Río de Ocampo", edad: 32 },
+            { municipio: "Actopan", edad: 31 },
+            { municipio: "Mixquiahuala de Juárez", edad: 31 },
+            { municipio: "Ixmiquilpan", edad: 30 }
+        ].sort((a, b) => b.edad - a.edad);
+
+        const recuentoDatos2023 = [
+            { municipio: "Pachuca de Soto", casos: 15 },
+            { municipio: "Huejutla de Reyes", casos: 7 },
+            { municipio: "Metepec", casos: 3 },
+            { municipio: "Actopan", casos: 2 },
+            { municipio: "Apan", casos: 1 },
+            { municipio: "Atotonilco el Grande", casos: 1 },
+            { municipio: "Ixmiquilpan", casos: 1 },
+            { municipio: "Mixquiahuala de Juárez", casos: 1 },
+            { municipio: "San Bartolo Tutotepec", casos: 1 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", casos: 1 },
+            { municipio: "Tecozautla", casos: 1 },
+            { municipio: "Tepeji del Río de Ocampo", casos: 1 },
+            { municipio: "Tizayuca", casos: 1 },
+            { municipio: "Tula de Allende", casos: 1 },
+            { municipio: "Tulancingo de Bravo", casos: 1 },
+            { municipio: "Zacualtipán de Ángeles", casos: 1 },
+            { municipio: "Zimapán", casos: 1 }
+        ];
+
+        const edadesDatos2023 = [
+            { municipio: "Pachuca de Soto", padre: 53, madre: 15 },
+            { municipio: "Atotonilco el Grande", padre: 51, madre: 14 },
+            { municipio: "Huejutla de Reyes", padre: 49, madre: 14 },
+            { municipio: "Zimapán", padre: 47, madre: 15 },
+            { municipio: "Tulancingo de Bravo", padre: 45, madre: 16 },
+            { municipio: "Zacualtipán de Ángeles", padre: 44, madre: 16 },
+            { municipio: "Metepec", padre: 40, madre: 15 },
+            { municipio: "Tula de Allende", padre: 40, madre: 16 },
+            { municipio: "Tecozautla", padre: 37, madre: 16 },
+            { municipio: "Tizayuca", padre: 37, madre: 16 },
+            { municipio: "Apan", padre: 36, madre: 16 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", padre: 34, madre: 16 },
+            { municipio: "San Bartolo Tutotepec", padre: 33, madre: 15 },
+            { municipio: "Tepeji del Río de Ocampo", padre: 32, madre: 15 },
+            { municipio: "Actopan", padre: 31, madre: 16 },
+            { municipio: "Mixquiahuala de Juárez", padre: 31, madre: 16 },
+            { municipio: "Ixmiquilpan", padre: 30, madre: 15 }
+        ];
+
+        // Datos 2024
+        const diferenciaDatos2024 = [
+            { municipio: "Pachuca de Soto", diferencia: 44 },
+            { municipio: "Zacualtipán de Ángeles", diferencia: 37 },
+            { municipio: "Tezontepec de Aldama", diferencia: 31 },
+            { municipio: "Mixquiahuala de Juárez", diferencia: 30 },
+            { municipio: "Tizayuca", diferencia: 27 },
+            { municipio: "Francisco I. Madero", diferencia: 22 },
+            { municipio: "Tepeji del Río de Ocampo", diferencia: 21 },
+            { municipio: "Metepec", diferencia: 20 },
+            { municipio: "Ixmiquilpan", diferencia: 19 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", diferencia: 19 },
+            { municipio: "Tulancingo de Bravo", diferencia: 17 },
+            { municipio: "Jacala de Ledezma", diferencia: 16 },
+            { municipio: "Huejutla de Reyes", diferencia: 11 }
+        ];
+
+        const madresDatos2024 = [
+            { municipio: "Francisco I. Madero", edad: 15 },
+            { municipio: "Ixmiquilpan", edad: 15 },
+            { municipio: "Mixquiahuala de Juárez", edad: 15 },
+            { municipio: "Tepeji del Río de Ocampo", edad: 15 },
+            { municipio: "Tizayuca", edad: 15 },
+            { municipio: "Huejutla de Reyes", edad: 14.75 },
+            { municipio: "Metepec", edad: 14.67 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", edad: 14.6 },
+            { municipio: "Pachuca de Soto", edad: 14.56 },
+            { municipio: "Tulancingo de Bravo", edad: 14.4 },
+            { municipio: "Zacualtipán de Ángeles", edad: 14.33 },
+            { municipio: "Jacala de Ledezma", edad: 14 },
+            { municipio: "Tezontepec de Aldama", edad: 14 }
+        ].sort((a, b) => a.edad - b.edad);
+
+        const padresDatos2024 = [
+            { municipio: "Mixquiahuala de Juárez", edad: 45 },
+            { municipio: "Tezontepec de Aldama", edad: 45 },
+            { municipio: "Tizayuca", edad: 42 },
+            { municipio: "Francisco I. Madero", edad: 37 },
+            { municipio: "Zacualtipán de Ángeles", edad: 36.67 },
+            { municipio: "Tepeji del Río de Ocampo", edad: 36 },
+            { municipio: "Pachuca de Soto", edad: 34.67 },
+            { municipio: "Metepec", edad: 31.33 },
+            { municipio: "Jacala de Ledezma", edad: 30 },
+            { municipio: "Ixmiquilpan", edad: 29.8 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", edad: 29 },
+            { municipio: "Tulancingo de Bravo", edad: 27.2 },
+            { municipio: "Huejutla de Reyes", edad: 25.25 }
+        ].sort((a, b) => b.edad - a.edad);
+
+        const recuentoDatos2024 = [
+            { municipio: "Pachuca de Soto", casos: 9 },
+            { municipio: "Ixmiquilpan", casos: 5 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", casos: 5 },
+            { municipio: "Tulancingo de Bravo", casos: 5 },
+            { municipio: "Huejutla de Reyes", casos: 4 },
+            { municipio: "Metepec", casos: 3 },
+            { municipio: "Zacualtipán de Ángeles", casos: 3 },
+            { municipio: "Francisco I. Madero", casos: 1 },
+            { municipio: "Jacala de Ledezma", casos: 1 },
+            { municipio: "Mixquiahuala de Juárez", casos: 1 },
+            { municipio: "Tepeji del Río de Ocampo", casos: 1 },
+            { municipio: "Tezontepec de Aldama", casos: 1 },
+            { municipio: "Tizayuca", casos: 1 }
+        ];
+
+        const edadesDatos2024 = [
+            { municipio: "Pachuca de Soto", padre: 58, madre: 14 },
+            { municipio: "Zacualtipán de Ángeles", padre: 52, madre: 13 },
+            { municipio: "Mixquiahuala de Juárez", padre: 45, madre: 15 },
+            { municipio: "Tezontepec de Aldama", padre: 45, madre: 14 },
+            { municipio: "Tizayuca", padre: 42, madre: 15 },
+            { municipio: "Francisco I. Madero", padre: 37, madre: 15 },
+            { municipio: "Tepeji del Río de Ocampo", padre: 36, madre: 15 },
+            { municipio: "Metepec", padre: 35, madre: 14 },
+            { municipio: "Ixmiquilpan", padre: 34, madre: 15 },
+            { municipio: "Santiago Tulantepec de Lugo Guerrero", padre: 34, madre: 14 },
+            { municipio: "Tulancingo de Bravo", padre: 31, madre: 13 },
+            { municipio: "Jacala de Ledezma", padre: 30, madre: 14 },
+            { municipio: "Huejutla de Reyes", padre: 25.25, madre: 14.75 }
+        ];
+
+        // Configuración de Chart.js para el tema oscuro
+        Chart.defaults.color = '#f8fafc';
+        Chart.defaults.borderColor = '#374151';
+        Chart.defaults.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+
+        // Función para poblar tablas
+        function poblarTabla(datos, bodyId, edadKey) {
+            const tbody = document.getElementById(bodyId);
+            tbody.innerHTML = ''; // Limpiar tabla existente
+            datos.forEach(item => {
+                const row = tbody.insertRow();
+                const cellMunicipio = row.insertCell(0);
+                const cellEdad = row.insertCell(1);
+                cellMunicipio.textContent = item.municipio;
+                cellEdad.textContent = item[edadKey].toFixed(1) + ' años';
+            });
+        }
+
+        // Poblar tablas 2023
+        poblarTabla(madresDatos2023, 'madresTableBody2023', 'edad');
+        poblarTabla(padresDatos2023, 'padresTableBody2023', 'edad');
+
+        // Poblar tablas 2024
+        poblarTabla(madresDatos2024, 'madresTableBody2024', 'edad');
+        poblarTabla(padresDatos2024, 'padresTableBody2024', 'edad');
+
+        // Función para crear gradiente
+        function createGradient(ctx, colorStart, colorEnd) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, colorStart);
+            gradient.addColorStop(1, colorEnd);
+            return gradient;
+        }
+
+        // Gráfica de diferencia de edad 2023
+        const ctxDiferencia2023 = document.getElementById('diferenciaChart2023').getContext('2d');
+        const gradientDif = createGradient(ctxDiferencia2023, 'rgba(59, 130, 246, 0.8)', 'rgba(59, 130, 246, 0.1)');
+        
+        new Chart(ctxDiferencia2023, {
+            type: 'line',
+            data: {
+                labels: diferenciaDatos2023.map(d => d.municipio.split(' ')[0]),
+                datasets: [{
+                    label: 'Diferencia de Edad (años)',
+                    data: diferenciaDatos2023.map(d => d.diferencia),
+                    borderColor: '#3b82f6',
+                    backgroundColor: gradientDif,
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: '#374151',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 10,
+                        max: 45,
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            stepSize: 5
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            maxRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de recuento 2023
+        const ctxRecuento2023 = document.getElementById('recuentoChart2023').getContext('2d');
+        const gradientBar = createGradient(ctxRecuento2023, 'rgba(139, 92, 246, 0.8)', 'rgba(139, 92, 246, 0.2)');
+        
+        new Chart(ctxRecuento2023, {
+            type: 'bar',
+            data: {
+                labels: recuentoDatos2023.map(d => d.municipio.split(' ')[0]),
+                datasets: [{
+                    label: 'Número de Casos',
+                    data: recuentoDatos2023.map(d => d.casos),
+                    backgroundColor: gradientBar,
+                    borderColor: '#8b5cf6',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: '#374151',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 16,
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            stepSize: 2
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            maxRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de edades comparativas 2023
+        const ctxEdades2023 = document.getElementById('edadesChart2023').getContext('2d');
+        
+        new Chart(ctxEdades2023, {
+            type: 'line',
+            data: {
+                labels: edadesDatos2023.map(d => d.municipio.split(' ')[0]),
+                datasets: [{
+                    label: 'Edad del Padre',
+                    data: edadesDatos2023.map(d => d.padre),
+                    borderColor: '#06b6d4',
+                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#06b6d4',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }, {
+                    label: 'Edad de la Madre',
+                    data: edadesDatos2023.map(d => d.madre),
+                    borderColor: '#ec4899',
+                    backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ec4899',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: '#374151',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y + ' años';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 10,
+                        max: 60,
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            stepSize: 10
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            maxRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // GRÁFICAS 2024
+        // Gráfica de diferencia de edad 2024
+        const ctxDiferencia2024 = document.getElementById('diferenciaChart2024').getContext('2d');
+        const gradientDif2024 = createGradient(ctxDiferencia2024, 'rgba(16, 185, 129, 0.8)', 'rgba(16, 185, 129, 0.1)');
+        
+        new Chart(ctxDiferencia2024, {
+            type: 'line',
+            data: {
+                labels: diferenciaDatos2024.map(d => d.municipio.split(' ')[0]),
+                datasets: [{
+                    label: 'Diferencia de Edad (años)',
+                    data: diferenciaDatos2024.map(d => d.diferencia),
+                    borderColor: '#10b981',
+                    backgroundColor: gradientDif2024,
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: '#374151',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 5,
+                        max: 50,
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            stepSize: 5
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            maxRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de recuento 2024
+        const ctxRecuento2024 = document.getElementById('recuentoChart2024').getContext('2d');
+        const gradientBar2024 = createGradient(ctxRecuento2024, 'rgba(245, 158, 11, 0.8)', 'rgba(245, 158, 11, 0.2)');
+        
+        new Chart(ctxRecuento2024, {
+            type: 'bar',
+            data: {
+                labels: recuentoDatos2024.map(d => d.municipio.split(' ')[0]),
+                datasets: [{
+                    label: 'Número de Casos',
+                    data: recuentoDatos2024.map(d => d.casos),
+                    backgroundColor: gradientBar2024,
+                    borderColor: '#f59e0b',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: '#374151',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            stepSize: 1
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            maxRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de edades comparativas 2024
+        const ctxEdades2024 = document.getElementById('edadesChart2024').getContext('2d');
+        
+        new Chart(ctxEdades2024, {
+            type: 'line',
+            data: {
+                labels: edadesDatos2024.map(d => d.municipio.split(' ')[0]),
+                datasets: [{
+                    label: 'Edad del Padre',
+                    data: edadesDatos2024.map(d => d.padre),
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#8b5cf6',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }, {
+                    label: 'Edad de la Madre',
+                    data: edadesDatos2024.map(d => d.madre),
+                    borderColor: '#ec4899',
+                    backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ec4899',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f8fafc',
+                        bodyColor: '#f8fafc',
+                        borderColor: '#374151',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y + ' años';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 10,
+                        max: 65,
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            stepSize: 10
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#374151',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#f8fafc',
+                            font: {
+                                family: 'Poppins'
+                            },
+                            maxRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Smooth scrolling para la navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animación de entrada
+        window.addEventListener('load', function() {
+            const elements = document.querySelectorAll('.stat-card, .card, .insight-card');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'all 0.6s ease-out';
+                    
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
